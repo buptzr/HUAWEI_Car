@@ -1,4 +1,4 @@
-from pylab import *
+import numpy as np
 
 
 
@@ -9,7 +9,7 @@ def floyd(d):
     P = []
     for i in range(lengthD):
         P.append(p)
-    P = array(P)
+    P = np.array(P)
     for k in range(lengthD):
         for i in range(lengthD):
             for j in range(lengthD):

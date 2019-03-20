@@ -2,11 +2,12 @@ import logging
 import sys
 from gen_map import *
 from floyd import *
-logging.basicConfig(level=logging.DEBUG,
-                    filename='../logs/CodeCraft-2019.log',
-                    format='[%(asctime)s] %(levelname)s [%(funcName)s: %(filename)s, %(lineno)d] %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    filemode='a')
+import os
+#logging.basicConfig(level=logging.DEBUG,
+#                    filename='../logs/CodeCraft-2019.log',
+#                    format='[%(asctime)s] %(levelname)s [%(funcName)s: %(filename)s, %(lineno)d] %(message)s',
+#                    datefmt='%Y-%m-%d %H:%M:%S',
+#                    filemode='a')
 
 def data_output(m,P):
     result = ""
@@ -52,11 +53,16 @@ def main():
     #logging.info("cross_path is %s" % (cross_path))
     #logging.info("answer_path is %s" % (answer_path))
 
-    graph_map = Graph_Map('../config/cross.txt', '../config/road.txt', '../config/car.txt')
+    #graph_map = Graph_Map('../config/cross.txt', '../config/road.txt', '../config/car.txt')
+    graph_map = Graph_Map(cross_path, road_path, car_path)
 
     dis_matrix, path_matrix = floyd(graph_map.matrix)
     result =data_output(graph_map,path_matrix)
-    print(result)
+    #print(result)
+    f = open(answer_path,'w')
+    f.write(result)
+    f.close()
+
 # to read input file
 # process
 # to write output file

@@ -67,7 +67,8 @@ class Graph_Map:
             #print(i,thiscross.neighbors)
             for j in range(4):
                 if  thiscross.neighbors[j] != -1:
-                    self.matrix[i-1][thiscross.neighbors[j]-1] = self.roadlist[thiscross.roads[j]].length
+                    if not (self.roadlist[thiscross.roads[j]].isDuplex ==0 and self.roadlist[thiscross.roads[j]].end==i):
+                        self.matrix[i-1][thiscross.neighbors[j]-1] = self.roadlist[thiscross.roads[j]].length
             #print(self.matrix[i-1])
 
         pass
