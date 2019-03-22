@@ -1,7 +1,7 @@
 import logging
 import sys
-from gen_map import *
-from floyd import *
+from .gen_map import *
+from .floyd import *
 import os
 #logging.basicConfig(level=logging.DEBUG,
 #                    filename='../logs/CodeCraft-2019.log',

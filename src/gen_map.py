@@ -16,6 +16,7 @@ class Cross:
         self.roads = sorted([road1, road2, road3, road4])
         self.neighbors = [-1,-1,-1,-1]
         self.directions = [-1]*4
+        self.grage = []
     def printt(self):
         print('id=',self.id,'roads=',self.roads,'neighbors=',self.neighbors)
 
@@ -31,7 +32,7 @@ class Car:
         self.pos = -1
         self.chedao = -1
         self.iswait = True
-        self.direction = -1
+        self.next_road_id = -1
 class Graph_Map:
     def __init__(self, crossfilepath, roadfilepath, carfilepath):
         crossinfolist = open(crossfilepath).readlines()
@@ -46,6 +47,8 @@ class Graph_Map:
         self.caridlist = []
         self.roadidlist = []
         self.crossidlist = []
+        self.arrived = 0
+        self.current_time = 0
 
         for roadinfo in roadinfolist[1:]:
             #print(roadinfo[1:-2].split(', '))
@@ -68,6 +71,7 @@ class Graph_Map:
         for carinfo in carinfolist[1:]:
             id, start, des, speed, planTime = [int(x) for x in carinfo[1:-2].split(', ')]
             self.carlist[id] = Car(id,start,des,speed, planTime)
+            self.crosslist[start].grage.append(id)#要求车库中的车的id从小到大堆叠，这里假设txt中的车id是有序排列的，否则有问题
             self.caridlist.append(id)
 
         self.matrix = [[9999 for i in range(len(self.crosslist))] for j in range(len(self.crosslist))]
