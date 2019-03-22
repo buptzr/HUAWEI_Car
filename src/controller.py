@@ -1,18 +1,31 @@
 from .gen_map import *
 import copy
-
+from random import choice
 
 class controller:
-    def __init__(self,map:Graph_Map):
+    def __init__(self,map:Graph_Map, path_matrix):
         self.map = map
         self.carlist = self.map.carlist
         self.roadlist = map.roadlist
         self.crosslist = self.map.crosslist
+        self.path_matrix = path_matrix
 
 
-    def car_scheduler(self, car_id, cross_id, options):
-        pass
-
+    def car_scheduler(self, car_id, cross_id, option):
+        if (option == 1 or option ==2):
+            return max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
+        elif (option ==3):
+            best_road = max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
+            choice_road = []
+            for road in self.crosslist[cross_id].roads:
+                if (road!= -1 and road != best_road and road != self.carlist[car_id].road_id):
+                    choice_road.append(road)
+            if (len(choice_road)):
+                return choice(choice_road)
+            else:
+                return -1
+        else:
+            return -1
 
     def get_biggest_car(self, road_id, direction):#给定road_id，获取这条路在direction方向上优先级最高的车的id
         #返回0,0说明这条路不存在或者路上没有要运动的车
