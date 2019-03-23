@@ -19,17 +19,18 @@ def floyd(d):
     #print('各个顶点的最短路径:')
     for i in range(lengthD):
         for j in range(i+1,lengthD):
-            #print('v%d' % (i+1) + '--' + 'v%d' % (j+1) + '\t' + 'dist_min:' + '\t' + str(D[i][j]) + '\t' + 'path:'+'v%d'%(i+1),end='' )
+            print('v%d' % (i+1) + '--' + 'v%d' % (j+1) + '\t' + 'dist_min:' + '\t' + str(D[i][j]) + '\t' + 'path:'+'v%d'%(i+1),end='' )
             temp=P[i][j]
             while (temp!=j):
-                #print('--'+'v%d'%(temp+1),end='')
+                print('--'+'v%d'%(temp+1),end='')
                 temp=P[temp][j]
             print('--'+'v%d'%(j+1))
-    print('P矩阵:')
-    print(P)
-    print('D矩阵:')
+    #print('P矩阵:')
+    #print(P)
+    #print('D矩阵:')
     for i in D:
-        print(i)
+        #print(i)
+        pass
     return D,P
 
 

@@ -48,14 +48,18 @@ class Graph_Map:
         self.roadidlist = []
         self.crossidlist = []
         self.arrived = 0
-        self.current_time = 0
+        self.current_time = 1
+        self.car_stared = 0
+        self.on_road = 0
+        self.add = 0
+        self.delete = 0
 
         for roadinfo in roadinfolist[1:]:
             #print(roadinfo[1:-2].split(', '))
             id, length, speed, channel, begin, end, isDuplex = [int(x) for x in roadinfo[1:-2].split(', ')]
             self.roadlist[id] = Road(id,length,speed,channel,begin,end,isDuplex)
             self.roadidlist.append(id)
-            print(id,length,speed,channel,begin,end,isDuplex)
+            #print(id,length,speed,channel,begin,end,isDuplex)
         for crossinfo in crossinfolist[1:]:
             id, road1, road2, road3, road4 = [int(x) for x in crossinfo[1:-2].split(', ')]
             self.crosslist[id] = Cross(id, road1,road2,road3,road4)
@@ -65,13 +69,19 @@ class Graph_Map:
                 if aroad != -1:
                     self.crosslist[id].neighbors[i] = self.roadlist[aroad].begin if self.roadlist[aroad].begin != id else \
                     self.roadlist[aroad].end
-                    self.crosslist[id].directions[i] = 0 if self.roadlist[aroad].end == id else 1
+                    if self.roadlist[aroad].end == id:
+                        self.crosslist[id].directions[i] = 0
+                    else:
+                        if self.roadlist[aroad].isDuplex == 1:
+                            self.crosslist[id].directions[i] = 1
+                        else:
+                            self.crosslist[id].directions[i] = -1
                 i += 1
             #self.crosslist[id].printt()
         for carinfo in carinfolist[1:]:
             id, start, des, speed, planTime = [int(x) for x in carinfo[1:-2].split(', ')]
             self.carlist[id] = Car(id,start,des,speed, planTime)
-            self.crosslist[start].grage.append(id)#要求车库中的车的id从小到大堆叠，这里假设txt中的车id是有序排列的，否则有问题
+            self.crosslist[start].grage.insert(0,id)#要求车库中的车的id从小到大堆叠，这里假设txt中的车id是有序排列的，否则有问题
             self.caridlist.append(id)
 
         self.matrix = [[9999 for i in range(len(self.crosslist))] for j in range(len(self.crosslist))]
