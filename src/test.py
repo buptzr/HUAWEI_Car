@@ -19,9 +19,11 @@ if __name__ == "__main__":
         map.roadlist = copy.deepcopy(a.roadlist)
     print(time.time()-start)
     '''
+    since = time.time()
     map = Graph_Map(crosspath, roadpath, carpath)
     dis_matrix, path_matrix = floyd(map.matrix)
     print(path_matrix)
     control = controller(map,path_matrix)
     control.main()
+    print(time.time()-since,'s cost')
 

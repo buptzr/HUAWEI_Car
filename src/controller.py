@@ -1,11 +1,7 @@
 from gen_map import *
 import copy
 from random import choice
-<<<<<<< HEAD
 import random
-=======
-
->>>>>>> 1465fe6290ce4f39b85f423f9edc48ba91eec96b
 class controller:
     def __init__(self,map:Graph_Map, path_matrix):
         self.map = map
@@ -16,11 +12,8 @@ class controller:
 
 
     def car_scheduler(self, car_id, cross_id, option):
-<<<<<<< HEAD
         if car_id == 0:####异常情况
             return -1
-=======
->>>>>>> 1465fe6290ce4f39b85f423f9edc48ba91eec96b
         if (option == 1 or option ==2):
             return max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
         elif (option ==3):
@@ -122,7 +115,7 @@ class controller:
                     break  # 不用再去别的车道上找位置了，退出循环
                 else:#路2的当前车道上最后一辆车是在停止状态
                     if row == nextroad.length-1:#路2的当前车道上最后一辆车是在最末尾，无空位可进，就去下一个车道找空位
-                        print('满了')
+                        #print('满了')
                         continue
                     else:#有空位，插进去
                         flag = 2#flag为2表示到达下一条路
@@ -308,7 +301,6 @@ class controller:
                 for channel in range(thisroad.channel):
                     self.adjust_channel(direction, road_id, channel)
         while True:  ##第二步：处理所有等待车辆
-            total_success = 0
             waiting_crosses = []
             success = 0
             for cross_id in self.map.crossidlist:
@@ -318,7 +310,6 @@ class controller:
                     state = self.move_once(cross_id)
                 if state == -1:
                     waiting_crosses.append(cross_id)
-            total_success += success
             if success == 0:  # 说明这一轮对路口的遍历中，一次成功调度都没有，则说明整体调度结束
                 if len(waiting_crosses) > 0:
                     print("存在死锁或者假死锁")
@@ -326,13 +317,12 @@ class controller:
                     # 改变某个车的方向，解除死锁
                     #######################
                 break
-        print('totalsuccess=', total_success)
         self.map.current_time += 1
         return  waiting_crosses
 
     def main(self):
         while self.map.arrived < len(self.map.carlist):
-            print('current_time', self.map.current_time, 'arrived', self.map.arrived,'onroad',self.map.on_road,'started',self.map.car_stared)
+            #print('current_time', self.map.current_time, 'arrived', self.map.arrived,'onroad',self.map.on_road,'started',self.map.car_stared)
             #print(self.map.arrived)
             waiting_crosses = self.one_diaodu()
             #print(waiting_crosses)
@@ -350,7 +340,7 @@ class controller:
                     state = self.go_to_road(cross_id)
                 if nums + self.map.on_road >= 30:
                     break
-
+        print(self.map.current_time)
         print('completed!')
 
 
