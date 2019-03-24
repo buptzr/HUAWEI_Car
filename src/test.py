@@ -1,9 +1,9 @@
 from gen_map import Graph_Map
 from controller import controller
 from floyd import *
-crosspath = 'C:/Dev/华为比赛/source/naive/1-map-training-2/cross.txt'
-roadpath = 'C:/Dev/华为比赛/source/naive/1-map-training-2/road.txt'
-carpath = 'C:/Dev/华为比赛/source/naive/1-map-training-2/car.txt'
+crosspath = 'C:/Dev/华为比赛/source/naive/1-map-training-1/cross.txt'
+roadpath = 'C:/Dev/华为比赛/source/naive/1-map-training-1/road.txt'
+carpath = 'C:/Dev/华为比赛/source/naive/1-map-training-1/car.txt'
 import time
 import copy
 

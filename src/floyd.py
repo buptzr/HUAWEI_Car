@@ -1,9 +1,9 @@
 import numpy as np
-
-
+import copy
 
 def floyd(d):
-    D=d
+    D=copy.deepcopy(d)
+
     lengthD = len(D)                    #邻接矩阵大小
     p = list(range(lengthD))
     P = []
@@ -18,15 +18,15 @@ def floyd(d):
                     D[i][j] = D[i][k]+D[k][j]
     #print('各个顶点的最短路径:')
     for i in range(lengthD):
-        for j in range(i+1,lengthD):
-            print('v%d' % (i+1) + '--' + 'v%d' % (j+1) + '\t' + 'dist_min:' + '\t' + str(D[i][j]) + '\t' + 'path:'+'v%d'%(i+1),end='' )
+        for j in range(lengthD):
+            #print('v%d' % (i+1) + '--' + 'v%d' % (j+1) + '\t' + 'dist_min:' + '\t' + str(D[i][j]) + '\t' + 'path:'+'v%d'%(i+1),end='' )
             temp=P[i][j]
             while (temp!=j):
-                print('--'+'v%d'%(temp+1),end='')
+                #print('--'+'v%d'%(temp+1),end='')
                 temp=P[temp][j]
-            print('--'+'v%d'%(j+1))
+            #print('--'+'v%d'%(j+1))
     #print('P矩阵:')
-    #print(P)
+    #print(P[25][17])
     #print('D矩阵:')
     for i in D:
         #print(i)

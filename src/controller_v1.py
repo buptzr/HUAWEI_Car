@@ -2,7 +2,6 @@ from gen_map import *
 import copy
 from random import choice
 import random
-from floyd import floyd
 class controller:
     def __init__(self,map:Graph_Map, path_matrix):
         self.map = map
@@ -11,46 +10,12 @@ class controller:
         self.crosslist = self.map.crosslist
         self.path_matrix = path_matrix
 
-    def schedule_update(self):
-        dis_matrix = self.map.matrix
-        length_matrix = len(dis_matrix)
-        for row in range(length_matrix):
-            for column in range(length_matrix):
-                if (dis_matrix[row][column] != 0 and dis_matrix[row][column] != 9999):
-                    #print (row)
-                    #print (column)
-                    #print (dis_matrix[row][column])
-                    road_id = max(
-                        [val for val in self.crosslist[row + 1].roads if val in self.crosslist[column + 1].roads])
-                    duplex = 0 if self.roadlist[road_id].begin == row + 1 else 1
-                    rate_block_road = float(np.sum(self.roadlist[road_id].car_queue[duplex] != 0)) / (float(
-                                np.sum(self.roadlist[road_id].car_queue[duplex] != 0)) + float(np.sum(
-                            self.roadlist[road_id].car_queue[duplex] == 0)))
-
-                    dis_matrix[row][column] = rate_block_road * self.roadlist[road_id].length * 4 + (
-                                1 - rate_block_road) * self.roadlist[road_id].length
-
-        distance_matrix, path_matrix = floyd(dis_matrix)
-        return path_matrix
 
     def car_scheduler(self, car_id, cross_id, option):
         if car_id == 0:####异常情况
             return -1
         if (option == 1 or option ==2):
-            best_road = max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[
-                self.path_matrix[cross_id - 1][self.carlist[car_id].des - 1] + 1].roads])
-            if (best_road != self.carlist[car_id].road_id and best_road not in self.carlist[car_id].path):
-                return max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
-            else:
-                choice_road = []
-                for road in self.crosslist[cross_id].roads:
-                    if (road != -1 and road != best_road and road != self.carlist[car_id].road_id and road not in self.carlist[car_id].path):
-                        if((self.roadlist[road].isDuplex == 0 and self.roadlist[road].begin == cross_id) or (self.roadlist[road].isDuplex == 1)):
-                            choice_road.append(road)
-                if (len(choice_road)):
-                    return choice_road[0]
-                else:
-                    return best_road
+            return max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
         elif (option ==3):
             best_road = max([val for val in self.crosslist[cross_id].roads if val in self.crosslist[self.path_matrix[cross_id-1][self.carlist[car_id].des-1]+1].roads])
             choice_road = []
@@ -351,24 +316,21 @@ class controller:
                     waiting_crosses.append(cross_id)
             if success == 0:  # 说明这一轮对路口的遍历中，一次成功调度都没有，则说明整体调度结束
                 if len(waiting_crosses) > 0:
-                    #print("存在死锁或者假死锁")
+                    print("存在死锁或者假死锁")
                     #######################
                     # 改变某个车的方向，解除死锁
                     #######################
-                    pass
                 break
         self.map.current_time += 1
         return  waiting_crosses
 
     def main(self):
         while self.map.arrived < len(self.map.carlist):
-            print('current_time', self.map.current_time, 'arrived', self.map.arrived,'onroad',self.map.on_road,'started',self.map.car_stared)
+            #print('current_time', self.map.current_time, 'arrived', self.map.arrived,'onroad',self.map.on_road,'started',self.map.car_stared)
             #print(self.map.arrived)
             waiting_crosses = self.one_diaodu()
-            if(self.map.current_time%200 == 0):
-                self.path_matrix = self.schedule_update()
             #print(waiting_crosses)
-            if self.map.on_road >= 300:
+            if self.map.on_road >= 120:
                 continue
             nums = 0
             for cross_id in list(set(self.map.crossidlist)-set(waiting_crosses)):
@@ -380,7 +342,7 @@ class controller:
                     #print('123')
                     #print(self.crosslist[cross_id].grage)
                     state = self.go_to_road(cross_id)
-                if nums + self.map.on_road >= 300:
+                if nums + self.map.on_road >= 120:
                     break
         for thiscar_id in self.map.carlist:
             thiscar = self.carlist[thiscar_id]

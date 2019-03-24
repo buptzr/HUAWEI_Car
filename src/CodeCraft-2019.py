@@ -1,7 +1,8 @@
 import logging
 import sys
-from .gen_map import *
-from .floyd import *
+from gen_map import *
+from floyd import *
+from controller import *
 import os
 #logging.basicConfig(level=logging.DEBUG,
 #                    filename='../logs/CodeCraft-2019.log',
@@ -55,9 +56,12 @@ def main():
 
     #graph_map = Graph_Map('../config/cross.txt', '../config/road.txt', '../config/car.txt')
     graph_map = Graph_Map(cross_path, road_path, car_path)
-
     dis_matrix, path_matrix = floyd(graph_map.matrix)
-    result =data_output(graph_map,path_matrix)
+
+
+    #print(path_matrix)
+    control = controller(graph_map, path_matrix)
+    result = control.main()
     #print(result)
     f = open(answer_path,'w')
     f.write(result)

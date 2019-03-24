@@ -33,6 +33,8 @@ class Car:
         self.chedao = -1
         self.iswait = True
         self.next_road_id = -1
+        self.realstarttime = -1
+        self.path = []
 class Graph_Map:
     def __init__(self, crossfilepath, roadfilepath, carfilepath):
         crossinfolist = open(crossfilepath).readlines()
@@ -53,6 +55,7 @@ class Graph_Map:
         self.on_road = 0
         self.add = 0
         self.delete = 0
+        self.result = ""
 
         for roadinfo in roadinfolist[1:]:
             #print(roadinfo[1:-2].split(', '))
